@@ -1,0 +1,13 @@
+name: GoldenAge
+main: dev.keii.goldenage.GoldenAge
+version: 1.0
+api-version: 1.7.3
+description: A simple set of commands and features to enhance beta 1.7.3
+author: dinkelspiel
+commands:
+  list:
+    description: List the players online
+    usage: /list
+  seen:
+    description: Gets the last time a player was seen
+    usage: /seen <player>

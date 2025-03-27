@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GoldenAge:jar2">
+    <output-path>$USER_HOME$/Coding/b173server/plugins</output-path>
+    <root id="archive" name="GoldenAge.jar">
+      <element id="module-output" name="GoldenAge" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/xerial/sqlite-jdbc/3.49.1.0/sqlite-jdbc-3.49.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/Moresteck/uberbukkit/2.0.2-241217-1442-3a5552b/uberbukkit-2.0.2-241217-1442-3a5552b.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
