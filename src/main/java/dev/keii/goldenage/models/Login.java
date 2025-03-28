@@ -9,27 +9,26 @@ import java.util.UUID;
 
 public class Login {
     @Getter @Setter
-    private int id;
-    @Getter @Setter
-    private UUID uuid;
+    private Integer id = null;
+    @Getter
+    private int userId;
+    @Getter
+    private User user;
     @Getter @Setter
     private LocalDateTime createdAt;
-    @Getter @Setter @Nullable
-    private LocalDateTime updatedAt;
 
-    public Login(int id, UUID uuid, LocalDateTime createdAt, @Nullable LocalDateTime updatedAt)
+    public Login(User user, LocalDateTime createdAt)
     {
-        this.id = id;
-        this.uuid = uuid;
+        this.userId = user.getId();
+        this.user = user;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
-    public Login(int id, String uuid, LocalDateTime createdAt, @Nullable LocalDateTime updatedAt)
+    public Login(int id, User user, LocalDateTime createdAt)
     {
         this.id = id;
-        this.uuid = UUID.fromString(uuid);
+        this.userId = user.getId();
+        this.user = user;
         this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 }

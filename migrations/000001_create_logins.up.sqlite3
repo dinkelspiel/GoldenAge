@@ -1,8 +1,0 @@
-CREATE TABLE IF NOT EXISTS logins (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    uuid TEXT NOT NULL,
-    created_at INTEGER NOT NULL,
-    updated_at INTEGER
-);
-
-CREATE INDEX idx_logins_uuid ON logins(uuid);

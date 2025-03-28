@@ -11,3 +11,6 @@ commands:
   seen:
     description: Gets the last time a player was seen
     usage: /seen <player>
+  db:
+    description: Command for database operations
+    usage: /db migrate|rollback

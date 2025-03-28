@@ -2,27 +2,36 @@ package dev.keii.goldenage.dao;
 
 import dev.keii.goldenage.GoldenAge;
 import dev.keii.goldenage.models.Login;
+import dev.keii.goldenage.models.User;
 import dev.keii.goldenage.utils.DatabaseUtility;
+import dev.keii.goldenage.utils.DateUtility;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Types;
+import java.awt.*;
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LoginDao {
     private final DatabaseUtility db;
 
-    public LoginDao(GoldenAge plugin) {
-        this.db = plugin.getDatabaseUtility();
+    public LoginDao(DatabaseUtility db) {
+        this.db = db;
     }
 
-    public long insertUser(Login login) {
-        try(PreparedStatement stmt = db.getConnection().prepareStatement("INSERT INTO logins(uuid, created_at, updated_at) VALUES(?, ?, ?)")) {
-            stmt.setString(1, login.getUuid().toString());
-            stmt.setLong(2, login.getCreatedAt().toEpochSecond(ZoneOffset.UTC));
+    public void insertLogin(Login login) {
+        if(login.getId() != null)
+        {
+            throw new IllegalArgumentException("Login ID must be null for new logins");
+        }
+
+        try(PreparedStatement stmt = db.getConnection().prepareStatement("INSERT INTO logins(user_id, created_at, updated_at) VALUES(?, ?, ?)")) {
+            stmt.setInt(1, login.getUserId());
+            stmt.setInt(2, (int)login.getCreatedAt().toEpochSecond(ZoneOffset.UTC));
             stmt.setNull(3, Types.INTEGER);
             stmt.executeQuery();
+            stmt.close();
 
             db.getConnection().commit();
         } catch (SQLException e) {
@@ -30,26 +39,23 @@ public class LoginDao {
         }
     }
 
-    public List<User> getAllUsers() {
-        List<User> userList = new ArrayList<>();
-        Cursor cursor = db.rawQuery("SELECT * FROM users", null);
+    public Login getLatestLoginByUser(User user) {
+        try {
+            List<Login> loginList = new ArrayList<>();
+            PreparedStatement stmt = db.getConnection().prepareStatement("SELECT id, user_id, created_at FROM logins WHERE user_id = ? ORDER BY id DESC LIMIT 1");
+            stmt.setInt(1, user.getId());
+            ResultSet rs = stmt.executeQuery();
 
-        if (cursor.moveToFirst()) {
-            do {
-                User user = new User(
-                        cursor.getInt(0),
-                        cursor.getString(1),
-                        cursor.getString(2),
-                        cursor.getString(3)
-                );
-                userList.add(user);
-            } while (cursor.moveToNext());
+            if(rs.next())
+            {
+                return new Login(rs.getInt(1), user, DateUtility.epochSecondsToDateTime(rs.getInt(3)));
+            }
+
+            rs.close();
+            stmt.close();
+            return null;
+        } catch (SQLException e) {
+            return null;
         }
-        cursor.close();
-        return userList;
-    }
-
-    public void close() {
-        db.close();
     }
 }

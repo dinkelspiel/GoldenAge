@@ -1,5 +1,6 @@
 package dev.keii.goldenage;
 
+import dev.keii.goldenage.commands.DatabaseCommand;
 import dev.keii.goldenage.commands.ListCommand;
 import dev.keii.goldenage.commands.SeenCommand;
 import dev.keii.goldenage.listeners.PlayerJoinListener;
@@ -31,6 +32,7 @@ public class GoldenAge extends JavaPlugin {
 
         this.getCommand("list").setExecutor(new ListCommand());
         this.getCommand("seen").setExecutor(new SeenCommand());
+        this.getCommand("db").setExecutor(new DatabaseCommand());
 
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(this), this);
 
