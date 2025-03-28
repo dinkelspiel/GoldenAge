@@ -14,3 +14,4 @@ commands:
   db:
     description: Command for database operations
     usage: /db migrate|rollback
+    permission: dev.keii.goldenage.db

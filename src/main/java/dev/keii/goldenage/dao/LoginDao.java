@@ -30,7 +30,7 @@ public class LoginDao {
             stmt.setInt(1, login.getUserId());
             stmt.setInt(2, (int)login.getCreatedAt().toEpochSecond(ZoneOffset.UTC));
             stmt.setNull(3, Types.INTEGER);
-            stmt.executeQuery();
+            stmt.execute();
             stmt.close();
 
             db.getConnection().commit();
@@ -48,7 +48,11 @@ public class LoginDao {
 
             if(rs.next())
             {
-                return new Login(rs.getInt(1), user, DateUtility.epochSecondsToDateTime(rs.getInt(3)));
+                int loginId = rs.getInt(1);
+                LocalDateTime timestamp = DateUtility.epochSecondsToDateTime(rs.getInt(3));
+                rs.close();
+                stmt.close();
+                return new Login(loginId, user, timestamp);
             }
 
             rs.close();

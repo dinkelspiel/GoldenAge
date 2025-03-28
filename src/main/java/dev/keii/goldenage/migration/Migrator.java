@@ -1,19 +1,32 @@
 package dev.keii.goldenage.migration;
 
-import dev.keii.goldenage.migration.migrations.CreateLogins0002;
-import dev.keii.goldenage.migration.migrations.CreateUsers0001;
+import dev.keii.goldenage.GoldenAge;
+import dev.keii.goldenage.migration.migrations.V0002_CreateLogins;
+import dev.keii.goldenage.migration.migrations.V0001_CreateUsers;
+import dev.keii.goldenage.migration.migrations.V0003_CreateUserNames;
 import dev.keii.goldenage.utils.DatabaseUtility;
+import org.bukkit.Bukkit;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Migrator {
     public DatabaseUtility db;
+    private final List<Migration> migrations;
+    private GoldenAge plugin;
 
-    public Migrator(DatabaseUtility db)
+    public Migrator(GoldenAge plugin)
     {
-        this.db = db;
+        this.plugin = plugin;
+        this.db = plugin.getDatabaseUtility();
+        migrations = new ArrayList<>();
+        migrations.add(new V0001_CreateUsers(this));
+        migrations.add(new V0002_CreateLogins(this));
+        migrations.add(new V0003_CreateUserNames(this));
     }
 
     public void setupMigrationsTable() throws SQLException {
@@ -25,29 +38,40 @@ public class Migrator {
 
     public int getLatestBatch() throws SQLException {
         Statement stmt = db.getConnection().createStatement();
-        stmt.executeQuery("SELECT batch FROM migrations ORDER BY id DESC LIMIT 1");
-        ResultSet rs = stmt.getResultSet();
-        stmt.close();
+        ResultSet rs = stmt.executeQuery("SELECT batch FROM migrations ORDER BY id DESC LIMIT 1");
 
         if(rs.next())
         {
-            return rs.getInt(1);
-        } else {
-            return 0;
+            int latestBatch = rs.getInt(1);
+            rs.close();
+            stmt.close();
+            return latestBatch;
         }
+        rs.close();
+        stmt.close();
+        return 0;
     }
 
     public void migrate() throws SQLException {
         int newBatch = getLatestBatch() + 1;
 
-        new CreateUsers0001(this).migrate(newBatch);
-        new CreateLogins0002(this).migrate(newBatch);
+        GoldenAge.getLogger().info("Migrate");
+        for (Migration migration : migrations)
+        {
+            migration.migrate(newBatch);
+        }
     }
 
     public void rollback() throws SQLException {
         int latestBatch = getLatestBatch();
 
-        new CreateLogins0002(this).rollback(latestBatch);
-        new CreateUsers0001(this).rollback(latestBatch);
+        GoldenAge.getLogger().info("Rollback");
+
+        Collections.reverse(migrations);
+        for (Migration migration : migrations)
+        {
+            migration.rollback(latestBatch);
+        }
+        Collections.reverse(migrations);
     }
 }

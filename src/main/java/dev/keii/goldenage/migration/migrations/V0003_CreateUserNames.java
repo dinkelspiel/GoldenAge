@@ -6,29 +6,25 @@ import dev.keii.goldenage.migration.Migrator;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class CreateLogins0002 extends Migration {
-    public CreateLogins0002(Migrator migrator) {
+public class V0003_CreateUserNames extends Migration {
+
+    public V0003_CreateUserNames(Migrator migrator) {
         super(migrator);
     }
 
     @Override
-    public String getName() {
-        return "00001_createLogins";
-    }
-
-    @Override
     public void up(Statement stmt) throws SQLException {
-        stmt.execute("CREATE TABLE IF NOT EXISTS logins (\n" +
+        stmt.execute("CREATE TABLE IF NOT EXISTS user_names (\n" +
                 "    id INTEGER PRIMARY KEY AUTOINCREMENT,\n" +
                 "    user_id INTEGER NOT NULL,\n" +
+                "    name TEXT NOT NULL,\n" +
                 "    created_at INTEGER NOT NULL,\n" +
-                "    updated_at INTEGER\n" +
                 "    FOREIGN KEY(user_id) REFERENCES users(id)\n" +
-                ");");
+                ");\n");
     }
 
     @Override
     public void down(Statement stmt) throws SQLException {
-        stmt.execute("DROP TABLE IF EXISTS logins;");
+        stmt.execute("DROP TABLE IF EXISTS user_names;");
     }
 }

@@ -6,15 +6,10 @@ import dev.keii.goldenage.migration.Migrator;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class CreateUsers0001 extends Migration {
+public class V0001_CreateUsers extends Migration {
 
-    public CreateUsers0001(Migrator migrator) {
+    public V0001_CreateUsers(Migrator migrator) {
         super(migrator);
-    }
-
-    @Override
-    public String getName() {
-        return "00002_createUsers";
     }
 
     @Override
