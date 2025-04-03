@@ -15,6 +15,9 @@ public class Config {
     @Getter
     private ErrorsConfig errors;
 
+    @Getter
+    private FormattersConfig formatters;
+
     private final Configuration configuration;
 
     public Config(Configuration configuration)
@@ -23,6 +26,7 @@ public class Config {
         this.database = new DatabaseConfig(configuration);
         this.commands = new CommandsConfig(configuration);
         this.errors = new ErrorsConfig(configuration);
+        this.formatters = new FormattersConfig(configuration);
     }
 
     public Env getEnv()

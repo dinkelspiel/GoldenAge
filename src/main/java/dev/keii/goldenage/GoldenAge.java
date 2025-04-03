@@ -1,6 +1,7 @@
 package dev.keii.goldenage;
 
 import dev.keii.goldenage.commands.DatabaseCommand;
+import dev.keii.goldenage.commands.HistoryCommand;
 import dev.keii.goldenage.commands.ListCommand;
 import dev.keii.goldenage.commands.SeenCommand;
 import dev.keii.goldenage.config.Config;
@@ -130,6 +131,8 @@ public class GoldenAge extends JavaPlugin {
             this.getCommand("list").setExecutor(new ListCommand(this));
         if (config.getCommands().getSeen().isEnabled())
             this.getCommand("seen").setExecutor(new SeenCommand(this));
+        if (config.getCommands().getHistory().isEnabled())
+            this.getCommand("history").setExecutor(new HistoryCommand(this));
         if (config.getEnv().equals(Env.Development))
             this.getCommand("db").setExecutor(new DatabaseCommand(this));
 

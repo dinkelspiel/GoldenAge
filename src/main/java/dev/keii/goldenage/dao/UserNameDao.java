@@ -63,4 +63,27 @@ public class UserNameDao {
             throw new RuntimeException(e);
         }
     }
+
+    public @Nullable UserName getUserNameByUser(User user) {
+        try {
+            PreparedStatement stmt = db.getConnection().prepareStatement("SELECT id, user_id, name, created_at FROM user_names WHERE user_id = ? LIMIT 1");
+            stmt.setInt(1, user.getId());
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                UserName userName = new UserName(rs.getInt(1), user, rs.getString(3), DateUtility.epochSecondsToDateTime(rs.getInt(4)));
+                rs.close();
+                stmt.close();
+                return userName;
+            }
+
+            rs.close();
+            stmt.close();
+            return null;
+        } catch (SQLException e) {
+            return null;
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

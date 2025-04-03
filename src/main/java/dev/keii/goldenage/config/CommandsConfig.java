@@ -1,5 +1,6 @@
 package dev.keii.goldenage.config;
 
+import dev.keii.goldenage.config.commands.HistoryConfig;
 import dev.keii.goldenage.config.commands.ListConfig;
 import dev.keii.goldenage.config.commands.SeenConfig;
 import lombok.Getter;
@@ -11,14 +12,13 @@ public class CommandsConfig {
     private ListConfig list;
     @Getter
     private SeenConfig seen;
+    @Getter
+    private HistoryConfig history;
 
     public CommandsConfig(Configuration configuration) {
         this.configuration = configuration;
         this.list = new ListConfig(configuration);
         this.seen = new SeenConfig(configuration);
-    }
-
-    public boolean isAutoMigrate() {
-        return this.configuration.getBoolean("database.auto-migrate", true);
+        this.history = new HistoryConfig(configuration);
     }
 }

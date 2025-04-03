@@ -3,6 +3,8 @@ database:
   auto-migrate: true
 errors:
   insufficient-arguments: "§cNot enough arguments"
+formatters:
+  date: "yyyy-MM-dd HH:mm"
 commands:
   list:
     format: "§eOnline players (${online}/${max}): ${playerList}"
@@ -12,4 +14,12 @@ commands:
     success-duration: "§e${player} was seen ${duration} ago."
     success-now: "§e${player} was seen now."
     success-online: "§e${player} is online."
+    enabled: true
+  history:
+    no-user: "§cUser was not found"
+    player-title: "§eLogin history for ${player}"
+    player-row: "§e${date} - ${duration}"
+    global-title: "§eLogin history for everyone"
+    global-row: "§e${player} logged in ${date} - ${duration}"
+    limit: 10
     enabled: true
