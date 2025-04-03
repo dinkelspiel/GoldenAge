@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 public class PlayerJoinListener implements Listener {
 
@@ -27,18 +28,18 @@ public class PlayerJoinListener implements Listener {
         UserDao userDao = new UserDao(plugin.getDatabaseUtility());
         User user = userDao.getUserByUuid(event.getPlayer().getUniqueId());
         if (user == null) {
-            user = new User(event.getPlayer().getUniqueId(), LocalDateTime.now(), null);
+            user = new User(event.getPlayer().getUniqueId(), LocalDateTime.now(ZoneOffset.UTC), null);
             user = userDao.insertUser(user);
             Bukkit.getLogger().info("Created user in db for " + event.getPlayer().getDisplayName());
         }
         UserNameDao userNameDao = new UserNameDao(plugin.getDatabaseUtility());
         UserName userName = userNameDao.getUserNameByName(event.getPlayer().getDisplayName());
         if (userName == null) {
-            userName = new UserName(user, event.getPlayer().getDisplayName(), LocalDateTime.now());
+            userName = new UserName(user, event.getPlayer().getDisplayName(), LocalDateTime.now(ZoneOffset.UTC));
             userNameDao.insertUserName(userName);
         }
 
-        Login login = new Login(user, LocalDateTime.now());
+        Login login = new Login(user, LocalDateTime.now(ZoneOffset.UTC));
         LoginDao loginDao = new LoginDao(plugin.getDatabaseUtility());
         loginDao.insertLogin(login);
     }

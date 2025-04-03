@@ -1,6 +1,7 @@
 package dev.keii.goldenage.commands;
 
 import dev.keii.goldenage.GoldenAge;
+import dev.keii.goldenage.config.Env;
 import dev.keii.goldenage.migration.Migrator;
 import dev.keii.goldenage.utils.DatabaseUtility;
 import org.bukkit.command.Command;
@@ -26,12 +27,9 @@ public class DatabaseCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (sender instanceof Player) {
-            if (!((Player) sender).getAddress().toString().contains("127.0.0.1")) {
-                sender.sendMessage(((Player) sender).getAddress().toString());
-                sender.sendMessage("Unknown command. Type \"help\" for help.");
-                return true;
-            }
+        // Don't allow execution of this command if the environment isn't development
+        if(!plugin.getConfig().getEnv().equals(Env.Development)) {
+            return false;
         }
 
         if (args.length == 0) {

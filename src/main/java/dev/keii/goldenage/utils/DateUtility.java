@@ -13,8 +13,6 @@ public class DateUtility {
             return null;
         }
 
-        GoldenAge.getLogger().info(epochTimeSeconds.toString());
-        GoldenAge.getLogger().info(String.valueOf((long) epochTimeSeconds * 1000L));
         Instant instant = Instant.ofEpochMilli((long) epochTimeSeconds * 1000L);
 
         return instant.atZone(ZoneId.ofOffset("UTC", ZoneOffset.UTC)).toLocalDateTime();

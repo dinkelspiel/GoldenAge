@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="jar" name="GoldenAge:jar5">
-    <output-path>$PROJECT_DIR$/out/artifacts/GoldenAge_jar5</output-path>
+    <output-path>$PROJECT_DIR$/../b173server/plugins</output-path>
     <root id="archive" name="GoldenAge.jar">
       <element id="module-output" name="GoldenAge" />
       <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar" path-in-jar="/" />

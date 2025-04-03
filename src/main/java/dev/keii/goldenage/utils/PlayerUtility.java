@@ -12,8 +12,6 @@ public class PlayerUtility {
     public String getPlayersListString()
     {
         Player[] players = Bukkit.getOnlinePlayers();
-        int onlinePlayers = players.length;
-        int maxPlayers = Bukkit.getMaxPlayers();
 
         StringBuilder playerList = new StringBuilder();
         for (Player player : players) {
@@ -22,6 +20,17 @@ public class PlayerUtility {
         }
         playerList.setLength(playerList.length() - 2);
 
-        return "Online players (" + onlinePlayers + "/" + maxPlayers + "): " + playerList.toString();
+        return playerList.toString();
+    }
+
+    public int getOnlinePlayers()
+    {
+        Player[] players = Bukkit.getOnlinePlayers();
+        return players.length;
+    }
+
+    public int getMaxPlayers()
+    {
+        return Bukkit.getMaxPlayers();
     }
 }

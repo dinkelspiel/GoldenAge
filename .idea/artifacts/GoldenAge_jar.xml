@@ -1,9 +1,0 @@
-<component name="ArtifactManager">
-  <artifact type="jar" name="GoldenAge:jar">
-    <output-path>$PROJECT_DIR$/out/artifacts/GoldenAge_jar</output-path>
-    <root id="archive" name="GoldenAge.jar">
-      <element id="module-output" name="GoldenAge" />
-      <element id="extracted-dir" path="$USER_HOME$/Downloads/uberbukkit-2.0.2.jar" path-in-jar="/" />
-    </root>
-  </artifact>
-</component>

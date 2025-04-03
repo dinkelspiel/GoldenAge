@@ -1,2 +1,15 @@
+env: production
 database:
   auto-migrate: true
+errors:
+  insufficient-arguments: "§cNot enough arguments"
+commands:
+  list:
+    format: "§eOnline players (${online}/${max}): ${playerList}"
+    enabled: true
+  seen:
+    no-user: "§cThis user has never been seen."
+    success-duration: "§e${player} was seen ${duration} ago."
+    success-now: "§e${player} was seen now."
+    success-online: "§e${player} is online."
+    enabled: true

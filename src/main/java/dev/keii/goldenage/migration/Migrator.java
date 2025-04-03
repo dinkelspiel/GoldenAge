@@ -55,7 +55,6 @@ public class Migrator {
     public void migrate() throws SQLException {
         int newBatch = getLatestBatch() + 1;
 
-        GoldenAge.getLogger().info("Migrate");
         for (Migration migration : migrations)
         {
             migration.migrate(newBatch);
@@ -64,8 +63,6 @@ public class Migrator {
 
     public void rollback() throws SQLException {
         int latestBatch = getLatestBatch();
-
-        GoldenAge.getLogger().info("Rollback");
 
         Collections.reverse(migrations);
         for (Migration migration : migrations)
