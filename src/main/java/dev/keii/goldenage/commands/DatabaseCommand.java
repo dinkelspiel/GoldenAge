@@ -3,8 +3,6 @@ package dev.keii.goldenage.commands;
 import dev.keii.goldenage.GoldenAge;
 import dev.keii.goldenage.migration.Migrator;
 import dev.keii.goldenage.utils.DatabaseUtility;
-import dev.keii.goldenage.utils.PlayerUtility;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -28,10 +26,8 @@ public class DatabaseCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
-        if(sender instanceof Player) {
-            if(!((Player) sender).getAddress().toString().contains("127.0.0.1"))
-            {
+        if (sender instanceof Player) {
+            if (!((Player) sender).getAddress().toString().contains("127.0.0.1")) {
                 sender.sendMessage(((Player) sender).getAddress().toString());
                 sender.sendMessage("Unknown command. Type \"help\" for help.");
                 return true;
@@ -44,7 +40,6 @@ public class DatabaseCommand implements CommandExecutor {
         }
 
         try {
-
             if (args[0].equalsIgnoreCase("migrate")) {
                 migrator.migrate();
             } else if (args[0].equalsIgnoreCase("rollback")) {
