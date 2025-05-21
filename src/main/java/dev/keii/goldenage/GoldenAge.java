@@ -9,6 +9,7 @@ import dev.keii.goldenage.config.ConfigLoader;
 import dev.keii.goldenage.config.Env;
 import dev.keii.goldenage.listeners.PlayerJoinListener;
 import dev.keii.goldenage.migration.Migrator;
+import dev.keii.goldenage.statistics.Statistics;
 import dev.keii.goldenage.utils.DatabaseUtility;
 import dev.keii.goldenage.utils.Logger;
 import lombok.Getter;
@@ -33,6 +34,9 @@ public class GoldenAge extends JavaPlugin {
 
     @Getter
     private Config config;
+
+    @Getter
+    private Statistics statistics;
 
     @SneakyThrows
     public boolean setupConfig() {
@@ -138,6 +142,9 @@ public class GoldenAge extends JavaPlugin {
 
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvents(new PlayerJoinListener(this), this);
+
+        this.statistics = new Statistics(this);
+        statistics.beginScheduler();
 
         GoldenAge.getLogger().info("GoldenAge has been enabled!");
     }
