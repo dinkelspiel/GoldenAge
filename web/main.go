@@ -4,12 +4,14 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"os"
 
 	serverdao "github.com/dinkelspiel/goldenage/web/dao/server"
 	statisticdao "github.com/dinkelspiel/goldenage/web/dao/statistic"
 	"github.com/dinkelspiel/goldenage/web/models"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type PostStatisticBody struct {
@@ -22,6 +24,10 @@ type PostStatisticBody struct {
 	OperatingSystem   string `json:"operatingSystem"`
 	Arch              string `json:"arch"`
 	JavaVersion       string `json:"javaVersion"`
+}
+
+type Config struct {
+	DatabaseUrl string
 }
 
 func setupRouter(db *sql.DB) *gin.Engine {
@@ -131,8 +137,23 @@ func setupRouter(db *sql.DB) *gin.Engine {
 	return r
 }
 
+func LoadConfig() (*Config, error) {
+	cfg := &Config{
+		DatabaseUrl: os.Getenv("DATABASE_URL"),
+	}
+	return cfg, nil
+}
+
 func main() {
-	dsn := "golden:golden@tcp(mysql:3306)/golden"
+	// Load Config
+	config, err := LoadConfig()
+	if err != nil {
+		log.Fatal("Error loading config: ", err)
+		return
+	}
+
+	// Load Database
+	dsn := config.DatabaseUrl
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Error opening database: ", err)

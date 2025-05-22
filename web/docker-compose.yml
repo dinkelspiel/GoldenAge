@@ -13,6 +13,8 @@ services:
     volumes:
       - mysql:/var/lib/mysql
   web:
+    env_file:
+    - './.env'
     build:
       context: .
       dockerfile: Dockerfile
