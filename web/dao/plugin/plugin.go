@@ -9,8 +9,8 @@ import (
 	"github.com/dinkelspiel/goldenage/web/models"
 )
 
-func GetPluginByIdAndSecret(db *sql.DB, id int64, secret string) (*models.Plugin, error) {
-	rows, err := db.Query("SELECT id, name, secret, user_id, created_at, updated_at FROM plugins WHERE id = ? AND secret = ?", id, secret)
+func GetPluginById(db *sql.DB, id int64) (*models.Plugin, error) {
+	rows, err := db.Query("SELECT id, name, user_id, created_at, updated_at FROM plugins WHERE id = ?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -19,7 +19,7 @@ func GetPluginByIdAndSecret(db *sql.DB, id int64, secret string) (*models.Plugin
 	var plugin models.Plugin
 	if rows.Next() {
 		var createdAt, updatedAt string
-		if err := rows.Scan(&plugin.Id, &plugin.Name, &plugin.Secret, &plugin.UserId, &createdAt, &updatedAt); err != nil {
+		if err := rows.Scan(&plugin.Id, &plugin.Name, &plugin.UserId, &createdAt, &updatedAt); err != nil {
 			return nil, err
 		}
 		updatedAtTime, err := time.Parse("2006-01-02 15:04:05", updatedAt)

@@ -14,18 +14,17 @@ CREATE TABLE
         `id` INT PRIMARY KEY AUTO_INCREMENT,
         `username` VARCHAR(32) NOT NULL UNIQUE,
         `email` VARCHAR(128) NOT NULL UNIQUE,
-        `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        `updated_at` TIMESTAMP,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
 
 CREATE TABLE
     IF NOT EXISTS `plugins` (
         `id` INT PRIMARY KEY AUTO_INCREMENT,
         `name` VARCHAR(64) NOT NULL UNIQUE,
-        `secret` VARCHAR(128) NOT NULL UNIQUE,
         `user_id` INT NOT NULL,
-        `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        `updated_at` TIMESTAMP,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
 
 CREATE TABLE
@@ -40,6 +39,6 @@ CREATE TABLE
         `arch` VARCHAR(32) NOT NULL,
         `java_version` VARCHAR(16) NOT NULL,
         `plugin_id` INT NOT NULL,
-        `updated_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        `updated_at` TIMESTAMP,
+        `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );

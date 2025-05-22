@@ -5,6 +5,10 @@ errors:
   insufficient-arguments: "§cNot enough arguments"
 formatters:
   date: "yyyy-MM-dd HH:mm"
+statistics:
+  enabled: true
+  remote: "http://localhost:8080"
+  pluginId: 1
 commands:
   list:
     format: "§eOnline players (${online}/${max}): ${playerList}"

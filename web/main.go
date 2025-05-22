@@ -14,7 +14,6 @@ import (
 
 type PostStatisticBody struct {
 	PluginId     int64  `json:"pluginId"`
-	PluginSecret string `json:"pluginSecret"`
 
 	PlayerCount       int    `json:"playerCount"`
 	OnlineMode        bool   `json:"onlineMode"`
@@ -43,7 +42,7 @@ func setupRouter(db *sql.DB) *gin.Engine {
 			return
 		}
 
-		_, err := plugindao.GetPluginByIdAndSecret(db, body.PluginId, body.PluginSecret)
+		_, err := plugindao.GetPluginById(db, body.PluginId)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
