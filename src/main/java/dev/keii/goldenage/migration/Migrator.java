@@ -5,7 +5,6 @@ import dev.keii.goldenage.migration.migrations.V0002_CreateLogins;
 import dev.keii.goldenage.migration.migrations.V0001_CreateUsers;
 import dev.keii.goldenage.migration.migrations.V0003_CreateUserNames;
 import dev.keii.goldenage.utils.DatabaseUtility;
-import org.bukkit.Bukkit;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

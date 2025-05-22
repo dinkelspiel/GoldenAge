@@ -2,7 +2,6 @@ package dev.keii.goldenage.migration;
 
 import dev.keii.goldenage.GoldenAge;
 import dev.keii.goldenage.utils.DatabaseUtility;
-import org.bukkit.Bukkit;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

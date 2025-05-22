@@ -1,0 +1,23 @@
+name: goldenage
+services:
+  mysql:
+    image: mysql
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: golden
+      MYSQL_PASSWORD: golden
+      MYSQL_USER: golden
+      MYSQL_DATABASE: golden
+    volumes:
+      - mysql:/var/lib/mysql
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
+volumes:
+  mysql: ~

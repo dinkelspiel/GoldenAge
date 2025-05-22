@@ -18,3 +18,7 @@ commands:
     description: Command for database operations
     usage: /db migrate|rollback
     permission: dev.keii.goldenage.db
+  statistics:
+    description: Command for statistics
+    usage: /statistics send
+    permission: dev.keii.goldenage.statistics

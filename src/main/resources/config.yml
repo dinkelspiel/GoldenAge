@@ -5,6 +5,8 @@ errors:
   insufficient-arguments: "§cNot enough arguments"
 formatters:
   date: "yyyy-MM-dd HH:mm"
+statistics:
+  enabled: true
 commands:
   list:
     format: "§eOnline players (${online}/${max}): ${playerList}"

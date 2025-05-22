@@ -1,7 +1,5 @@
 package dev.keii.goldenage.config;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.bukkit.util.config.Configuration;
 
 public class DatabaseConfig {

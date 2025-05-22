@@ -1,9 +1,5 @@
 package dev.keii.goldenage.config;
 
-import dev.keii.goldenage.config.commands.HistoryConfig;
-import dev.keii.goldenage.config.commands.ListConfig;
-import dev.keii.goldenage.config.commands.SeenConfig;
-import lombok.Getter;
 import org.bukkit.util.config.Configuration;
 
 public class FormattersConfig {
