@@ -8,7 +8,8 @@ formatters:
 statistics:
   enabled: true
   remote: "http://localhost:8080"
-  pluginId: 1
+  serverId: 1
+  serverSecret: "A0b4SxZCenMV2gyORpzxaUl6XuBamd0i"
 commands:
   list:
     format: "§eOnline players (${online}/${max}): ${playerList}"

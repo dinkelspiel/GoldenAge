@@ -3,9 +3,7 @@ package dev.keii.goldenage.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.annotation.Nullable;
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 public class UserName {
     @Getter @Setter

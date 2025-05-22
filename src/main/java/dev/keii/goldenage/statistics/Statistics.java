@@ -3,23 +3,23 @@ package dev.keii.goldenage.statistics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
+import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 
 public class Statistics {
     private final JavaPlugin plugin;
     private final String remote;
-    private final int pluginId;
+    private final int serverId;
+    private final String serverSecret;
 
-    public Statistics(JavaPlugin plugin, String remote, int pluginId) {
+    public Statistics(JavaPlugin plugin, String remote, int serverId, String serverSecret) {
         this.plugin = plugin;
         this.remote = remote;
-        this.pluginId = pluginId;
+        this.serverId = serverId;  
+        this.serverSecret = serverSecret;
     }
 
     final int ticksInASecond = 20;
@@ -29,24 +29,14 @@ public class Statistics {
         int interval = ticksInASecond * secondsInAnHour;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             int playerCount = plugin.getServer().getOnlinePlayers().length;
-            boolean onlineMode = plugin.getServer().getOnlineMode();
             String gameVersion = this.plugin.getServer().getGameVersion();
             String serverEnvironment = this.plugin.getServer().getServerEnvironment();
-            String publicIp = "";
-            try {
-                URL url = new URL("https://api.ipify.org");
-                BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
-                in.readLine();
-            } catch (IOException e) {
-                publicIp = "";
-            }
-
             String operatingSystem = System.getProperty("os.name");
             String arch = System.getProperty("os.arch");
             String javaVersion = System.getProperty("java.version");
 
             try {
-                URL url = new URL(this.remote); // Replace with actual URL
+                URL url = (new URI(this.remote)).toURL(); // Replace with actual URL
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
                 // Set up connection properties
@@ -59,13 +49,12 @@ public class Statistics {
                 StringBuilder body = new StringBuilder();
 
                 body.append("{");
-                body.append("\"pluginId\":").append(this.pluginId).append(",");
+                body.append("\"serverId\":").append(this.serverId).append(",");
+                body.append("\"serverSecret\":\"").append(this.serverSecret).append("\",");
 
                 body.append("\"playerCount\":").append(playerCount).append(",");
-                body.append("\"onlineMode\":").append(onlineMode).append(",");
                 body.append("\"gameVersion\":\"").append(gameVersion).append("\",");
                 body.append("\"serverEnvironment\":\"").append(serverEnvironment).append("\",");
-                body.append("\"publicIp\":\"").append(publicIp).append("\",");
                 body.append("\"operatingSystem\":\"").append(operatingSystem).append("\",");
                 body.append("\"arch\":\"").append(arch).append("\",");
                 body.append("\"javaVersion\":\"").append(javaVersion).append("\",");

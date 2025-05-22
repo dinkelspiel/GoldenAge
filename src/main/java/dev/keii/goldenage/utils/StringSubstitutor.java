@@ -1,7 +1,6 @@
 package dev.keii.goldenage.utils;
 
 import java.util.Map;
-import java.util.regex.Pattern;
 
 public class StringSubstitutor {
     private final Map<String, Object> map;

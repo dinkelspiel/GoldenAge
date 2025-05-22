@@ -22,8 +22,12 @@ public class StatisticsConfig {
         return this.configuration.getString("statistics.remote", "http://localhost:8080");
     }
 
-    public int getPluginId() {
-        return this.configuration.getInt("statistics.pluginId", 1);
+    public int getServerId() {
+        return this.configuration.getInt("statistics.serverId", -1);
+    }
+
+    public String getServerSecret() {
+        return this.configuration.getString("statistics.serverSecret", "");
     }
 }
 

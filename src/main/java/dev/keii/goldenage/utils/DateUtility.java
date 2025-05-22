@@ -1,7 +1,5 @@
 package dev.keii.goldenage.utils;
 
-import dev.keii.goldenage.GoldenAge;
-
 import javax.annotation.Nullable;
 import java.time.*;
 import java.util.ArrayList;

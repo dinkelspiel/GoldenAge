@@ -19,9 +19,11 @@ CREATE TABLE
     );
 
 CREATE TABLE
-    IF NOT EXISTS `plugins` (
+    IF NOT EXISTS `servers` (
         `id` INT PRIMARY KEY AUTO_INCREMENT,
         `name` VARCHAR(64) NOT NULL UNIQUE,
+        `secret` VARCHAR(64) NOT NULL,
+        `server_address` VARCHAR(64) NOT NULL,
         `user_id` INT NOT NULL,
         `updated_at` TIMESTAMP,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
@@ -31,14 +33,12 @@ CREATE TABLE
     IF NOT EXISTS `statistics` (
         `id` INT PRIMARY KEY AUTO_INCREMENT,
         `player_count` INT NOT NULL,
-        `online_mode` BOOLEAN NOT NULL,
         `game_version` VARCHAR(16) NOT NULL,
         `server_environment` VARCHAR(32) NOT NULL,
-        `public_ip` VARCHAR(32) NOT NULL,
         `operating_system` VARCHAR(32) NOT NULL,
         `arch` VARCHAR(32) NOT NULL,
         `java_version` VARCHAR(16) NOT NULL,
-        `plugin_id` INT NOT NULL,
+        `server_id` INT NOT NULL,
         `updated_at` TIMESTAMP,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );

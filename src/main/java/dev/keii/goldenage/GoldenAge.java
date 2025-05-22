@@ -143,7 +143,7 @@ public class GoldenAge extends JavaPlugin {
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvents(new PlayerJoinListener(this), this);
 
-        this.statistics = new Statistics(this, config.getStatistics().getRemote(), config.getStatistics().getPluginId());
+        this.statistics = new Statistics(this, config.getStatistics().getRemote(), config.getStatistics().getServerId(),  config.getStatistics().getServerSecret());
         statistics.beginScheduler();
 
         GoldenAge.getLogger().info("GoldenAge has been enabled!");

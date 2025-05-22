@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	plugindao "github.com/dinkelspiel/goldenage/web/dao/plugin"
+	serverdao "github.com/dinkelspiel/goldenage/web/dao/server"
 	statisticdao "github.com/dinkelspiel/goldenage/web/dao/statistic"
 	"github.com/dinkelspiel/goldenage/web/models"
 	"github.com/gin-gonic/gin"
@@ -13,13 +13,12 @@ import (
 )
 
 type PostStatisticBody struct {
-	PluginId     int64  `json:"pluginId"`
+	ServerId     int64  `json:"serverId"`
+	ServerSecret string `json:"serverSecret"`
 
 	PlayerCount       int    `json:"playerCount"`
-	OnlineMode        bool   `json:"onlineMode"`
 	GameVersion       string `json:"gameVersion"`
 	ServerEnvironment string `json:"serverEnvironment"`
-	PublicIp          string `json:"publicIp"`
 	OperatingSystem   string `json:"operatingSystem"`
 	Arch              string `json:"arch"`
 	JavaVersion       string `json:"javaVersion"`
@@ -42,7 +41,7 @@ func setupRouter(db *sql.DB) *gin.Engine {
 			return
 		}
 
-		_, err := plugindao.GetPluginById(db, body.PluginId)
+		_, err := serverdao.GetServerByIdAndSecret(db, body.ServerId, body.ServerSecret)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
@@ -51,15 +50,14 @@ func setupRouter(db *sql.DB) *gin.Engine {
 		}
 
 		createStatistic := models.Statistic{
+			ServerId: body.ServerId,
+
 			PlayerCount:       body.PlayerCount,
-			OnlineMode:        body.OnlineMode,
 			GameVersion:       body.GameVersion,
 			ServerEnvironment: body.ServerEnvironment,
-			PublicIp:          body.PublicIp,
 			OperatingSystem:   body.OperatingSystem,
 			Arch:              body.Arch,
 			JavaVersion:       body.JavaVersion,
-			PluginId:          body.PluginId,
 		}
 		_, err = statisticdao.CreateStatistic(db, createStatistic)
 		if err != nil {
