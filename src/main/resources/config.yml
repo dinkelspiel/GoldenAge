@@ -7,9 +7,6 @@ formatters:
   date: "yyyy-MM-dd HH:mm"
 statistics:
   enabled: true
-  remote: "http://localhost:8080"
-  serverId: 1
-  serverSecret: "A0b4SxZCenMV2gyORpzxaUl6XuBamd0i"
 commands:
   list:
     format: "§eOnline players (${online}/${max}): ${playerList}"

@@ -13,8 +13,8 @@ import (
 )
 
 type PostStatisticBody struct {
-	ServerId     int64  `json:"serverId"`
-	ServerSecret string `json:"serverSecret"`
+	ServerId     *int64  `json:"serverId"`
+	ServerSecret *string `json:"serverSecret"`
 
 	PlayerCount       int    `json:"playerCount"`
 	GameVersion       string `json:"gameVersion"`
@@ -41,16 +41,8 @@ func setupRouter(db *sql.DB) *gin.Engine {
 			return
 		}
 
-		_, err := serverdao.GetServerByIdAndSecret(db, body.ServerId, body.ServerSecret)
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-
 		createStatistic := models.Statistic{
-			ServerId: body.ServerId,
+			ServerId: nil,
 
 			PlayerCount:       body.PlayerCount,
 			GameVersion:       body.GameVersion,
@@ -59,7 +51,25 @@ func setupRouter(db *sql.DB) *gin.Engine {
 			Arch:              body.Arch,
 			JavaVersion:       body.JavaVersion,
 		}
-		_, err = statisticdao.CreateStatistic(db, createStatistic)
+
+		if (body.ServerId != nil) != (body.ServerSecret != nil) {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "serverId or serverSecret was provided but not both. Send none of them for an anonymous statistic",
+			})
+			return
+		}
+
+		if body.ServerId != nil {
+			_, err := serverdao.GetServerByIdAndSecret(db, *body.ServerId, *body.ServerSecret)
+			if err != nil {
+				c.JSON(http.StatusBadRequest, gin.H{
+					"error": err.Error(),
+				})
+				return
+			}
+			createStatistic.ServerId = body.ServerId
+		}
+		_, err := statisticdao.CreateStatistic(db, createStatistic)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
@@ -67,9 +77,15 @@ func setupRouter(db *sql.DB) *gin.Engine {
 			return
 		}
 
-		c.JSON(http.StatusCreated, gin.H{
-			"message": "Created statistic",
-		})
+		if body.ServerId == nil {
+			c.JSON(http.StatusCreated, gin.H{
+				"message": "Created anonymous statistic",
+			})
+		} else {
+			c.JSON(http.StatusCreated, gin.H{
+				"message": "Created statistic",
+			})
+		}
 	})
 
 	// Get user value
@@ -120,10 +136,12 @@ func main() {
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
 		log.Fatal("Error opening database: ", err)
+		return
 	}
 	defer db.Close()
 	if err = db.Ping(); err != nil {
 		log.Fatal("Error pinging database: ", err)
+		return
 	}
 
 	r := setupRouter(db)

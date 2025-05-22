@@ -14,14 +14,10 @@ import java.io.StringWriter;
 import java.sql.SQLException;
 
 @SuppressWarnings("unused")
-public class DatabaseCommand implements CommandExecutor {
-    DatabaseUtility db;
-    Migrator migrator;
+public class StatisticsCommand implements CommandExecutor {
     GoldenAge plugin;
 
-    public DatabaseCommand(GoldenAge plugin) {
-        this.db = plugin.getDatabaseUtility();
-        this.migrator = new Migrator(plugin);
+    public StatisticsCommand(GoldenAge plugin) {
         this.plugin = plugin;
     }
 
@@ -37,22 +33,24 @@ public class DatabaseCommand implements CommandExecutor {
             return false;
         }
 
-        try {
-            if (args[0].equalsIgnoreCase("migrate")) {
-                migrator.migrate();
-            } else if (args[0].equalsIgnoreCase("rollback")) {
-                migrator.rollback();
+        if (args[0].equalsIgnoreCase("send")) {
+            Integer responseCode = this.plugin.getStatistics().sendStatistics();
+            if (responseCode == null) {
+                sender.sendMessage("Internal error submitting statistics");
+                return true;
             }
-        } catch (SQLException e) {
-            sender.sendMessage("Failed to migrate");
-            sender.sendMessage(e.getMessage());
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            sender.sendMessage(sw.toString());
+            if (responseCode == 201) {
+                sender.sendMessage("Sent statistics");
+                return true;
+            }
+
+            sender.sendMessage("Error sending statistics check logs");
+            return true;
         }
 
-        return true;
+        sender.sendMessage("Invalid argument");
+        return false;
+
     }
 
 }

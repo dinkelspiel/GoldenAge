@@ -18,19 +18,27 @@ func GetServerByIdAndSecret(db *sql.DB, id int64, secret string) (*models.Server
 
 	var server models.Server
 	if rows.Next() {
-		var createdAt, updatedAt string
+		var createdAt string
+		var updatedAt sql.NullString
 		if err := rows.Scan(&server.Id, &server.Secret, &server.Name, &server.ServerAddress, &server.UserId, &createdAt, &updatedAt); err != nil {
 			return nil, err
 		}
-		updatedAtTime, err := time.Parse("2006-01-02 15:04:05", updatedAt)
-		if err != nil {
-			return nil, err
+		var updatedAtTime time.Time
+		if updatedAt.Valid {
+			updatedAtTime, err = time.Parse("2006-01-02 15:04:05", updatedAt.String)
+			if err != nil {
+				return nil, err
+			}
 		}
 		createdAtTime, err := time.Parse("2006-01-02 15:04:05", createdAt)
 		if err != nil {
 			return nil, err
 		}
-		server.UpdatedAt = &updatedAtTime
+		if updatedAt.Valid {
+			server.UpdatedAt = &updatedAtTime
+		} else {
+			server.UpdatedAt = nil
+		}
 		server.CreatedAt = &createdAtTime
 		server.User, err = userdao.GetUserById(db, server.UserId)
 		if err != nil {

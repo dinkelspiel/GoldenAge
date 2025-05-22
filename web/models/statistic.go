@@ -12,8 +12,8 @@ type Statistic struct {
 	Arch              string
 	JavaVersion       string
 
-	ServerId int64
-	Server   Server
+	ServerId *int64
+	Server   *Server
 
 	UpdatedAt *time.Time
 	CreatedAt *time.Time

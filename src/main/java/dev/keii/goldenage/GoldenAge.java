@@ -4,12 +4,15 @@ import dev.keii.goldenage.commands.DatabaseCommand;
 import dev.keii.goldenage.commands.HistoryCommand;
 import dev.keii.goldenage.commands.ListCommand;
 import dev.keii.goldenage.commands.SeenCommand;
+import dev.keii.goldenage.commands.StatisticsCommand;
 import dev.keii.goldenage.config.Config;
 import dev.keii.goldenage.config.ConfigLoader;
 import dev.keii.goldenage.config.Env;
 import dev.keii.goldenage.listeners.PlayerJoinListener;
 import dev.keii.goldenage.migration.Migrator;
+import dev.keii.goldenage.statistics.AnonymousStatistics;
 import dev.keii.goldenage.statistics.Statistics;
+import dev.keii.goldenage.utils.CommandUtility;
 import dev.keii.goldenage.utils.DatabaseUtility;
 import dev.keii.goldenage.utils.Logger;
 import lombok.Getter;
@@ -53,7 +56,8 @@ public class GoldenAge extends JavaPlugin {
             FileWriter configFileWriter = new FileWriter("plugins/GoldenAge/config.yml");
 
             if (configInputStream != null) {
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(configInputStream, StandardCharsets.UTF_8))) {
+                try (BufferedReader reader = new BufferedReader(
+                        new InputStreamReader(configInputStream, StandardCharsets.UTF_8))) {
                     StringBuilder content = new StringBuilder();
                     String line;
                     GoldenAge.getLogger().info("Writing defaults to config...");
@@ -74,7 +78,7 @@ public class GoldenAge extends JavaPlugin {
             GoldenAge.getLogger().severe(e.toString());
             Bukkit.getPluginManager().disablePlugin(this);
             throw e;
-            //return false;
+            // return false;
         }
     }
 
@@ -93,7 +97,7 @@ public class GoldenAge extends JavaPlugin {
         }
 
         try {
-            GoldenAge.getLogger().info("Loading config.");
+            GoldenAge.getLogger().info("Loading config...");
             this.config = ConfigLoader.loadConfig("plugins/GoldenAge/config.yml");
         } catch (IOException e) {
             GoldenAge.getLogger().severe("Failed to read config!");
@@ -133,17 +137,34 @@ public class GoldenAge extends JavaPlugin {
 
         if (config.getCommands().getList().isEnabled())
             this.getCommand("list").setExecutor(new ListCommand(this));
+        else
+            CommandUtility.unregisterCommand("list");
         if (config.getCommands().getSeen().isEnabled())
             this.getCommand("seen").setExecutor(new SeenCommand(this));
+        else
+            CommandUtility.unregisterCommand("seen");
         if (config.getCommands().getHistory().isEnabled())
             this.getCommand("history").setExecutor(new HistoryCommand(this));
-        if (config.getEnv().equals(Env.Development))
+        else
+            CommandUtility.unregisterCommand("history");
+        if (config.getEnv().equals(Env.Development)) {
             this.getCommand("db").setExecutor(new DatabaseCommand(this));
+            this.getCommand("statistics").setExecutor(new StatisticsCommand(this));
+        } else {
+            CommandUtility.unregisterCommand("db");
+            CommandUtility.unregisterCommand("statistics");
+        }
 
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvents(new PlayerJoinListener(this), this);
 
-        this.statistics = new Statistics(this, config.getStatistics().getRemote(), config.getStatistics().getServerId(),  config.getStatistics().getServerSecret());
+        if (config.getStatistics().getServerId() != null) {
+            this.statistics = new Statistics(this, config.getStatistics().getRemote(),
+                    config.getStatistics().getServerId(),
+                    config.getStatistics().getServerSecret());
+        } else {
+            this.statistics = new AnonymousStatistics(this, config.getStatistics().getRemote());
+        }
         statistics.beginScheduler();
 
         GoldenAge.getLogger().info("GoldenAge has been enabled!");

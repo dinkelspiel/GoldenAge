@@ -38,7 +38,7 @@ CREATE TABLE
         `operating_system` VARCHAR(32) NOT NULL,
         `arch` VARCHAR(32) NOT NULL,
         `java_version` VARCHAR(16) NOT NULL,
-        `server_id` INT NOT NULL,
+        `server_id` INT,
         `updated_at` TIMESTAMP,
         `created_at` TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
     );
