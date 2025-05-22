@@ -5,10 +5,13 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
+	"time"
 
 	serverdao "github.com/dinkelspiel/goldenage/web/dao/server"
 	statisticdao "github.com/dinkelspiel/goldenage/web/dao/statistic"
 	"github.com/dinkelspiel/goldenage/web/models"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/joho/godotenv/autoload"
@@ -34,6 +37,7 @@ func setupRouter(db *sql.DB) *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 	r := gin.Default()
+	r.StaticFile("/", "./static/index.html")
 
 	// Ping test
 	r.GET("/ping", func(c *gin.Context) {
@@ -92,6 +96,38 @@ func setupRouter(db *sql.DB) *gin.Engine {
 				"message": "Created statistic",
 			})
 		}
+	})
+
+	r.GET("/api/servers/:serverId/statistics/player-count", func(c *gin.Context) {
+		serverIdString := c.Param("serverId")
+		serverId, err := strconv.Atoi(serverIdString)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "serverId must be an int",
+			})
+			return
+		}
+
+		server, err := serverdao.GetServerById(db, int64(serverId))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		playerCount, err := statisticdao.GetMaxPlayerCountForDays(db, *server, 10)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Success",
+			"data":    playerCount,
+		})
 	})
 
 	// Get user value
@@ -166,6 +202,17 @@ func main() {
 	}
 
 	r := setupRouter(db)
+	r.Use(cors.New(cors.Config{
+		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH"},
+		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
+		ExposeHeaders:    []string{"Content-Length"},
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			return origin == "null" || origin == "https://goldenage.keii.dev/" || origin == "https://github.com"
+		},
+		MaxAge: 12 * time.Hour,
+	}))
+
 	// Listen and Server in 0.0.0.0:8080
 	r.Run(":8080")
 }
