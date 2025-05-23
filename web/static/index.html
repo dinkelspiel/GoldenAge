@@ -1,102 +1,108 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  </head>
-  <body
-    class="from-neutral-900 to-neutral-950 bg-radial w-screen h-screen flex justify-center items-center text-white"
-  >
-    <main class="grid grid-cols-2 min-w-[1520px]">
-      <div class="flex flex-col gap-3 justify-center">
-        <div class="flex flex-col gap-6">
-          <svg
-            class="stroke-neutral-400"
-            xmlns="http://www.w3.org/2000/svg"
-            width="184"
-            height="184"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            class="lucide lucide-box-icon lucide-box"
-          >
-            <path
-              d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"
-            />
-            <path d="m3.3 7 8.7 5 8.7-5" />
-            <path d="M12 22V12" />
-          </svg>
-          <h1
-            class="font-semibold tracking-tight flex gap-2 text-5xl leading-[1.5] items-center"
-          >
-            Pack.png SMP
-          </h1>
-        </div>
-        <div class="text-xl font-medium text-neutral-400">
-          A beta 1.7.3 minecraft server on the iconic seed<br />
-          <i>goldenage.keii.dev</i>
-        </div>
-      </div>
-      <div class="grid grid-cols-4 gap-6">
-        <div
-          class="rounded-xl col-span-4 border border-neutral-800 border-opacity-50 bg-neutral-800 shadow"
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    </head>
+    <body
+        class="from-neutral-900 p-6 to-neutral-950 bg-radial w-[100dvw] min-h-[100dvh] flex justify-center items-center text-white"
+    >
+        <main
+            class="grid gap-16 md:grid-cols-2 lg:min-w-[1024px] 2xl:min-w-[1520px]"
         >
-          <div class="flex flex-col space-y-1.5 p-6">
-            <h2
-              class="font-semibold leading-none tracking-tight text-neutral-400"
-            >
-              Max Player Count
-            </h2>
-          </div>
-          <div class="flex flex-col space-y-1.5 p-6">
-            <div class="p-6">
-              <canvas id="playerChart"></canvas>
-              <script defer>
-                const ctx = document.getElementById("playerChart");
-
-                const init = async () => {
-                  const data = (
-                    await (
-                      await fetch(
-                        "https://goldenage.keii.dev/api/servers/1/statistics/player-count"
-                      )
-                    ).json()
-                  )["data"];
-
-                  new Chart(ctx, {
-                    type: "line",
-                    data: {
-                      labels: data.map((row) =>
-                        new Date(row.Date).toDateString()
-                      ),
-                      datasets: [
-                        {
-                          label: "Max Player Count",
-                          data: data.map((row) => row.MaxPlayerCount),
-                          borderWidth: 1,
-                        },
-                      ],
-                    },
-                    options: {
-                      scales: {
-                        y: {
-                          beginAtZero: true,
-                        },
-                      },
-                    },
-                  });
-                };
-                init();
-              </script>
+            <div class="flex flex-col gap-3 justify-center">
+                <div class="flex flex-col gap-6">
+                    <svg
+                        class="stroke-neutral-400 size-[128px] 2xl:size-[148px]"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="lucide lucide-box-icon lucide-box"
+                    >
+                        <path
+                            d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"
+                        />
+                        <path d="m3.3 7 8.7 5 8.7-5" />
+                        <path d="M12 22V12" />
+                    </svg>
+                    <h1
+                        class="font-semibold tracking-tight flex gap-2 text-4xl 2xl:text-5xl leading-[1.5] items-center"
+                    >
+                        Pack.png SMP
+                    </h1>
+                </div>
+                <div class="text-md 2xl:text-xl font-medium text-neutral-400">
+                    A beta 1.7.3 minecraft server on the iconic seed<br />
+                    <i>goldenage.keii.dev</i>
+                </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </main>
-  </body>
+            <div class="grid grid-cols-4 gap-6">
+                <div
+                    class="rounded-xl col-span-4 border border-neutral-800 border-opacity-50 bg-neutral-800 shadow"
+                >
+                    <div class="flex flex-col space-y-1.5 p-6">
+                        <h2
+                            class="font-semibold leading-none tracking-tight text-neutral-400"
+                        >
+                            Max Player Count
+                        </h2>
+                    </div>
+                    <div class="flex flex-col space-y-1.5 p-6">
+                        <div class="p-6">
+                            <canvas id="playerChart"></canvas>
+                            <script defer>
+                                const ctx =
+                                    document.getElementById("playerChart");
+
+                                const init = async () => {
+                                    const data = (
+                                        await (
+                                            await fetch(
+                                                "https://goldenage.keii.dev/api/servers/1/statistics/player-count",
+                                            )
+                                        ).json()
+                                    )["data"];
+
+                                    new Chart(ctx, {
+                                        type: "line",
+                                        data: {
+                                            labels: data.map((row) =>
+                                                new Date(
+                                                    row.Date,
+                                                ).toDateString(),
+                                            ),
+                                            datasets: [
+                                                {
+                                                    label: "Max Player Count",
+                                                    data: data.map(
+                                                        (row) =>
+                                                            row.MaxPlayerCount,
+                                                    ),
+                                                    borderWidth: 1,
+                                                },
+                                            ],
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true,
+                                                },
+                                            },
+                                        },
+                                    });
+                                };
+                                init();
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </body>
 </html>
