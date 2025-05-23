@@ -54,52 +54,46 @@
                         </h2>
                     </div>
                     <div class="flex flex-col space-y-1.5 p-6">
-                        <div class="p-6">
-                            <canvas id="playerChart"></canvas>
-                            <script defer>
-                                const ctx =
-                                    document.getElementById("playerChart");
+                        <canvas id="playerChart"></canvas>
+                        <script defer>
+                            const ctx = document.getElementById("playerChart");
 
-                                const init = async () => {
-                                    const data = (
-                                        await (
-                                            await fetch(
-                                                "https://goldenage.keii.dev/api/servers/1/statistics/player-count",
-                                            )
-                                        ).json()
-                                    )["data"];
+                            const init = async () => {
+                                const data = (
+                                    await (
+                                        await fetch(
+                                            "https://goldenage.keii.dev/api/servers/1/statistics/player-count",
+                                        )
+                                    ).json()
+                                )["data"];
 
-                                    new Chart(ctx, {
-                                        type: "line",
-                                        data: {
-                                            labels: data.map((row) =>
-                                                new Date(
-                                                    row.Date,
-                                                ).toDateString(),
-                                            ),
-                                            datasets: [
-                                                {
-                                                    label: "Max Player Count",
-                                                    data: data.map(
-                                                        (row) =>
-                                                            row.MaxPlayerCount,
-                                                    ),
-                                                    borderWidth: 1,
-                                                },
-                                            ],
-                                        },
-                                        options: {
-                                            scales: {
-                                                y: {
-                                                    beginAtZero: true,
-                                                },
+                                new Chart(ctx, {
+                                    type: "line",
+                                    data: {
+                                        labels: data.map((row) =>
+                                            new Date(row.Date).toDateString(),
+                                        ),
+                                        datasets: [
+                                            {
+                                                label: "Max Player Count",
+                                                data: data.map(
+                                                    (row) => row.MaxPlayerCount,
+                                                ),
+                                                borderWidth: 1,
+                                            },
+                                        ],
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
                                             },
                                         },
-                                    });
-                                };
-                                init();
-                            </script>
-                        </div>
+                                    },
+                                });
+                            };
+                            init();
+                        </script>
                     </div>
                 </div>
             </div>
