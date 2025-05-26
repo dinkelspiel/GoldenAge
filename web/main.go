@@ -148,7 +148,7 @@ func setupRouter(db *sql.DB) *gin.Engine {
 			return
 		}
 
-		playerCount, err := statisticdao.GetPlayerCountHistory(db, *server, 10)
+		playerCount, err := statisticdao.GetPlayerCountHistory(db, *server, 48)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
