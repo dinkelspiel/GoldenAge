@@ -77,7 +77,7 @@ func GetPlayerCountHistory(db *sql.DB, server models.Server, hourLimit int) (*[]
 		SELECT created_at as Date, player_count as PlayerCount
 		FROM statistics
 		WHERE server_id = ?
-		ORDER BY date
+		ORDER BY date DESC
 		LIMIT %d
 	`, hourLimit)
 
