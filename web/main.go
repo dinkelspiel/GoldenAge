@@ -98,7 +98,7 @@ func setupRouter(db *sql.DB) *gin.Engine {
 		}
 	})
 
-	r.GET("/api/servers/:serverId/statistics/player-count", func(c *gin.Context) {
+	r.GET("/api/servers/:serverId/statistics/max-player-count", func(c *gin.Context) {
 		serverIdString := c.Param("serverId")
 		serverId, err := strconv.Atoi(serverIdString)
 		if err != nil {
@@ -117,6 +117,38 @@ func setupRouter(db *sql.DB) *gin.Engine {
 		}
 
 		playerCount, err := statisticdao.GetMaxPlayerCountForDays(db, *server, 10)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		c.JSON(http.StatusOK, gin.H{
+			"message": "Success",
+			"data":    playerCount,
+		})
+	})
+
+	r.GET("/api/servers/:serverId/statistics/player-count", func(c *gin.Context) {
+		serverIdString := c.Param("serverId")
+		serverId, err := strconv.Atoi(serverIdString)
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": "serverId must be an int",
+			})
+			return
+		}
+
+		server, err := serverdao.GetServerById(db, int64(serverId))
+		if err != nil {
+			c.JSON(http.StatusBadRequest, gin.H{
+				"error": err.Error(),
+			})
+			return
+		}
+
+		playerCount, err := statisticdao.GetPlayerCountHistory(db, *server, 10)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),

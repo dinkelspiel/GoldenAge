@@ -54,11 +54,65 @@
                         </h2>
                     </div>
                     <div class="flex flex-col space-y-1.5 p-6">
+                        <canvas id="maxPlayerChart"></canvas>
+                        <script defer>
+                            const ctx1 =
+                                document.getElementById("maxPlayerChart");
+
+                            const init1 = async () => {
+                                const data = (
+                                    await (
+                                        await fetch(
+                                            "https://goldenage.keii.dev/api/servers/1/statistics/max-player-count",
+                                        )
+                                    ).json()
+                                )["data"];
+
+                                new Chart(ctx, {
+                                    type: "line",
+                                    data: {
+                                        labels: data.map((row) =>
+                                            new Date(row.Date).toDateString(),
+                                        ),
+                                        datasets: [
+                                            {
+                                                label: "Max Player Count",
+                                                data: data.map(
+                                                    (row) => row.MaxPlayerCount,
+                                                ),
+                                                borderWidth: 1,
+                                            },
+                                        ],
+                                    },
+                                    options: {
+                                        scales: {
+                                            y: {
+                                                beginAtZero: true,
+                                            },
+                                        },
+                                    },
+                                });
+                            };
+                            init();
+                        </script>
+                    </div>
+                </div>
+                <div
+                    class="rounded-xl col-span-4 border border-neutral-800 border-opacity-50 bg-neutral-800 shadow"
+                >
+                    <div class="flex flex-col space-y-1.5 p-6">
+                        <h2
+                            class="font-semibold leading-none tracking-tight text-neutral-400"
+                        >
+                            Player Count
+                        </h2>
+                    </div>
+                    <div class="flex flex-col space-y-1.5 p-6">
                         <canvas id="playerChart"></canvas>
                         <script defer>
-                            const ctx = document.getElementById("playerChart");
+                            const ctx2 = document.getElementById("playerChart");
 
-                            const init = async () => {
+                            const init2 = async () => {
                                 const data = (
                                     await (
                                         await fetch(
@@ -77,7 +131,7 @@
                                             {
                                                 label: "Max Player Count",
                                                 data: data.map(
-                                                    (row) => row.MaxPlayerCount,
+                                                    (row) => row.PlayerCount,
                                                 ),
                                                 borderWidth: 1,
                                             },

@@ -66,3 +66,48 @@ func GetMaxPlayerCountForDays(db *sql.DB, server models.Server, dayLimit int) (*
 
 	return &result, nil
 }
+
+type PlayerCountDay struct {
+	Date        time.Time
+	PlayerCount int
+}
+
+func GetPlayerCountHistory(db *sql.DB, server models.Server, hourLimit int) (*[]PlayerCountDay, error) {
+	query := fmt.Sprintf(`
+		SELECT created_at as Date, player_count as PlayerCount
+		FROM statistics
+		WHERE server_id = ?
+		ORDER BY date
+		LIMIT %d
+	`, hourLimit)
+
+	rows, err := db.Query(query, server.Id)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	var result []PlayerCountDay
+
+	for rows.Next() {
+		if err := rows.Err(); err != nil {
+			return nil, err
+		}
+
+		var date string
+		var playerCount PlayerCountDay
+		if err := rows.Scan(&date, &playerCount.PlayerCount); err != nil {
+			return nil, err
+		}
+
+		dateTime, err := time.Parse("2006-01-02", date)
+		if err != nil {
+			return nil, err
+		}
+		playerCount.Date = dateTime
+
+		result = append(result, playerCount)
+	}
+
+	return &result, nil
+}
