@@ -1,9 +1,7 @@
 package dev.keii.goldenage.migration;
 
 import dev.keii.goldenage.GoldenAge;
-import dev.keii.goldenage.migration.migrations.V0002_CreateLogins;
-import dev.keii.goldenage.migration.migrations.V0001_CreateUsers;
-import dev.keii.goldenage.migration.migrations.V0003_CreateUserNames;
+import dev.keii.goldenage.migration.migrations.*;
 import dev.keii.goldenage.utils.DatabaseUtility;
 
 import java.sql.ResultSet;
@@ -26,6 +24,8 @@ public class Migrator {
         migrations.add(new V0001_CreateUsers(this));
         migrations.add(new V0002_CreateLogins(this));
         migrations.add(new V0003_CreateUserNames(this));
+        migrations.add(new V0004_CreateWorlds(this));
+        migrations.add(new V0005_CreateTransactions(this));
     }
 
     public void setupMigrationsTable() throws SQLException {

@@ -1,23 +1,23 @@
 package dev.keii.goldenage;
 
+import dev.keii.goldenage.betaprotect.BetaProtect;
 import dev.keii.goldenage.commands.DatabaseCommand;
 import dev.keii.goldenage.commands.HistoryCommand;
 import dev.keii.goldenage.commands.ListCommand;
 import dev.keii.goldenage.commands.SeenCommand;
-import dev.keii.goldenage.commands.StatisticsCommand;
 import dev.keii.goldenage.config.Config;
 import dev.keii.goldenage.config.ConfigLoader;
 import dev.keii.goldenage.config.Env;
+import dev.keii.goldenage.dao.WorldDao;
 import dev.keii.goldenage.listeners.PlayerJoinListener;
 import dev.keii.goldenage.migration.Migrator;
-import dev.keii.goldenage.statistics.AnonymousStatistics;
 import dev.keii.goldenage.statistics.Statistics;
-import dev.keii.goldenage.utils.CommandUtility;
 import dev.keii.goldenage.utils.DatabaseUtility;
 import dev.keii.goldenage.utils.Logger;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -97,7 +97,7 @@ public class GoldenAge extends JavaPlugin {
         }
 
         try {
-            GoldenAge.getLogger().info("Loading config...");
+            GoldenAge.getLogger().info("Loading config.");
             this.config = ConfigLoader.loadConfig("plugins/GoldenAge/config.yml");
         } catch (IOException e) {
             GoldenAge.getLogger().severe("Failed to read config!");
@@ -135,37 +135,35 @@ public class GoldenAge extends JavaPlugin {
             }
         }
 
+        WorldDao worldDao = new WorldDao(this.getDatabaseUtility());
+        for (World world : Bukkit.getWorlds()) {
+            dev.keii.goldenage.models.World existingWorld = worldDao.getWorldByUuid(world.getUID());
+            if (existingWorld != null)
+                continue;
+
+            // Create world in database if it doesn't exist
+            dev.keii.goldenage.models.World dbWorld = new dev.keii.goldenage.models.World(world.getName(), world.getUID());
+            worldDao.insertWorld(dbWorld);
+            GoldenAge.getLogger().info("Created world '" + world.getName() + "' in database");
+        }
+
         if (config.getCommands().getList().isEnabled())
             this.getCommand("list").setExecutor(new ListCommand(this));
-        else
-            CommandUtility.unregisterCommand("list");
         if (config.getCommands().getSeen().isEnabled())
             this.getCommand("seen").setExecutor(new SeenCommand(this));
-        else
-            CommandUtility.unregisterCommand("seen");
         if (config.getCommands().getHistory().isEnabled())
             this.getCommand("history").setExecutor(new HistoryCommand(this));
-        else
-            CommandUtility.unregisterCommand("history");
-        if (config.getEnv().equals(Env.Development)) {
+        if (config.getEnv().equals(Env.Development))
             this.getCommand("db").setExecutor(new DatabaseCommand(this));
-            this.getCommand("statistics").setExecutor(new StatisticsCommand(this));
-        } else {
-            CommandUtility.unregisterCommand("db");
-            CommandUtility.unregisterCommand("statistics");
-        }
 
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvents(new PlayerJoinListener(this), this);
 
-        if (config.getStatistics().getServerId() != null) {
-            this.statistics = new Statistics(this, config.getStatistics().getRemote(),
-                    config.getStatistics().getServerId(),
-                    config.getStatistics().getServerSecret());
-        } else {
-            this.statistics = new AnonymousStatistics(this, config.getStatistics().getRemote());
-        }
+        this.statistics = new Statistics(this, config.getStatistics().getRemote(), config.getStatistics().getServerId(), config.getStatistics().getServerSecret());
         statistics.beginScheduler();
+
+        BetaProtect betaProtect = new BetaProtect(this);
+        betaProtect.registerListeners();
 
         GoldenAge.getLogger().info("GoldenAge has been enabled!");
     }
