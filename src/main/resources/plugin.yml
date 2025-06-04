@@ -26,4 +26,3 @@ commands:
     aliases: ["bp"]
     description: Command for BetaProtect
     usage: /betaprotect inspect
-    permission: dev.keii.goldenage.betaprotect
