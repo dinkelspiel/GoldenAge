@@ -1,5 +1,12 @@
 package dev.keii.goldenage.betaprotect.listeners;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockBreakEvent;
+
 import dev.keii.goldenage.GoldenAge;
 import dev.keii.goldenage.betaprotect.BetaProtect;
 import dev.keii.goldenage.betaprotect.dao.BlockTransactionDao;
@@ -10,13 +17,6 @@ import dev.keii.goldenage.dao.UserDao;
 import dev.keii.goldenage.dao.WorldDao;
 import dev.keii.goldenage.models.User;
 import dev.keii.goldenage.models.World;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
-
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 
 public class BlockBreakListener implements Listener {
     private final GoldenAge plugin;

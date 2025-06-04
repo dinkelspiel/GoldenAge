@@ -1,14 +1,9 @@
 package dev.keii.goldenage.betaprotect.listeners;
 
-import dev.keii.goldenage.GoldenAge;
-import dev.keii.goldenage.betaprotect.BetaProtect;
-import dev.keii.goldenage.betaprotect.dao.BlockTransactionDao;
-import dev.keii.goldenage.betaprotect.models.BlockTransaction;
-import dev.keii.goldenage.betaprotect.models.TransactionAction;
-import dev.keii.goldenage.betaprotect.models.TransactionActor;
-import dev.keii.goldenage.dao.WorldDao;
-import dev.keii.goldenage.models.World;
-import org.bukkit.Bukkit;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.List;
+
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Fireball;
@@ -17,9 +12,14 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.List;
+import dev.keii.goldenage.GoldenAge;
+import dev.keii.goldenage.betaprotect.BetaProtect;
+import dev.keii.goldenage.betaprotect.dao.BlockTransactionDao;
+import dev.keii.goldenage.betaprotect.models.BlockTransaction;
+import dev.keii.goldenage.betaprotect.models.TransactionAction;
+import dev.keii.goldenage.betaprotect.models.TransactionActor;
+import dev.keii.goldenage.dao.WorldDao;
+import dev.keii.goldenage.models.World;
 
 public class EntityExplodeListener implements Listener {
     private final GoldenAge plugin;

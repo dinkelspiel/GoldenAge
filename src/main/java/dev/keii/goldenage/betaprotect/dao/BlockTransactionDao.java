@@ -1,13 +1,5 @@
 package dev.keii.goldenage.betaprotect.dao;
 
-import dev.keii.goldenage.dao.UserDao;
-import dev.keii.goldenage.dao.WorldDao;
-import dev.keii.goldenage.models.User;
-import dev.keii.goldenage.models.World;
-import dev.keii.goldenage.utils.DatabaseUtility;
-import dev.keii.goldenage.utils.DateUtility;
-import dev.keii.goldenage.betaprotect.models.*;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,7 +8,15 @@ import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.block.Block;
+import dev.keii.goldenage.betaprotect.models.BlockTransaction;
+import dev.keii.goldenage.betaprotect.models.TransactionAction;
+import dev.keii.goldenage.betaprotect.models.TransactionActor;
+import dev.keii.goldenage.dao.UserDao;
+import dev.keii.goldenage.dao.WorldDao;
+import dev.keii.goldenage.models.User;
+import dev.keii.goldenage.models.World;
+import dev.keii.goldenage.utils.DatabaseUtility;
+import dev.keii.goldenage.utils.DateUtility;
 
 public class BlockTransactionDao {
     private final DatabaseUtility db;

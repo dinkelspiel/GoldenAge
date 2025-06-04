@@ -1,16 +1,22 @@
 package dev.keii.goldenage.betaprotect;
 
-import dev.keii.goldenage.GoldenAge;
-import dev.keii.goldenage.betaprotect.commands.BetaProtectCommand;
-import dev.keii.goldenage.betaprotect.listeners.*;
-import dev.keii.goldenage.commands.HistoryCommand;
-import lombok.Getter;
-import org.bukkit.block.Block;
-import org.bukkit.plugin.PluginManager;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+
+import org.bukkit.block.Block;
+import org.bukkit.plugin.PluginManager;
+
+import dev.keii.goldenage.GoldenAge;
+import dev.keii.goldenage.betaprotect.commands.BetaProtectCommand;
+import dev.keii.goldenage.betaprotect.listeners.BlockBreakListener;
+import dev.keii.goldenage.betaprotect.listeners.BlockBurnListener;
+import dev.keii.goldenage.betaprotect.listeners.BlockPlaceListener;
+import dev.keii.goldenage.betaprotect.listeners.EntityExplodeListener;
+import dev.keii.goldenage.betaprotect.listeners.PlayerBucketEmptyListener;
+import dev.keii.goldenage.betaprotect.listeners.PlayerBucketFillListener;
+import dev.keii.goldenage.betaprotect.listeners.PlayerInteractListener;
+import lombok.Getter;
 
 public class BetaProtect {
     @Getter

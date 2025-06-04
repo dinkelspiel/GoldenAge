@@ -1,11 +1,12 @@
 package dev.keii.goldenage.betaprotect.listeners;
 
-import dev.keii.goldenage.GoldenAge;
-import dev.keii.goldenage.betaprotect.BetaProtect;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.ChestOpenedEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+
+import dev.keii.goldenage.GoldenAge;
+import dev.keii.goldenage.betaprotect.BetaProtect;
 
 public class ChestListener implements Listener {
     private final GoldenAge plugin;
