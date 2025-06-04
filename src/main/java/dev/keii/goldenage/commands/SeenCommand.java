@@ -52,14 +52,13 @@ public class SeenCommand implements CommandExecutor {
         Map<String, Object> params = new HashMap<>();
         params.put("player", args[0]);
 
-        if (Arrays.stream(Bukkit.getOnlinePlayers()).anyMatch((Player player) -> player.getDisplayName().equalsIgnoreCase(args[0]) ))
-        {
+        if (Arrays.stream(Bukkit.getOnlinePlayers()).anyMatch((Player player) -> player.getDisplayName().equalsIgnoreCase(args[0]))) {
             StringSubstitutor substitutor = new StringSubstitutor(params);
             sender.sendMessage(substitutor.replace(plugin.getConfig().getCommands().getSeen().getSuccessOnline()));
             return true;
         }
 
-        String ago = DateUtility.getHumanReadableTimeSpan(login.getCreatedAt().toEpochSecond(ZoneOffset.UTC));
+        String ago = DateUtility.getHumanReadableTimeSpan(login.getCreatedAt().toEpochSecond(ZoneOffset.UTC), false);
 
         if (ago.equals("now")) {
             StringSubstitutor substitutor = new StringSubstitutor(params);

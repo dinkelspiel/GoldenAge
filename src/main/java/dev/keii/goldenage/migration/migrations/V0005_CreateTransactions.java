@@ -45,6 +45,9 @@ public class V0005_CreateTransactions extends Migration {
                 "    FOREIGN KEY(user_id) REFERENCES users(id)\n" +
                 "    FOREIGN KEY(world_id) REFERENCES worlds(id)\n" +
                 ");\n");
+
+        stmt.execute("CREATE INDEX IF NOT EXISTS idx_container_xyz ON container_transactions (x, y, z);");
+        stmt.execute("CREATE INDEX IF NOT EXISTS idx_block_xyz ON block_transactions (x, y, z);");
     }
 
     @Override

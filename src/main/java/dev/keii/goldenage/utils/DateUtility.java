@@ -16,8 +16,15 @@ public class DateUtility {
         return instant.atZone(ZoneId.ofOffset("UTC", ZoneOffset.UTC)).toLocalDateTime();
     }
 
+    private static String getShort(String unit, boolean shortUnits) {
+        if (shortUnits) {
+            return unit.substring(0, 2).trim();
+        } else {
+            return unit;
+        }
+    }
 
-    public static String getHumanReadableTimeSpan(long epochSeconds) {
+    public static String getHumanReadableTimeSpan(long epochSeconds, boolean shortUnits) {
         Instant now = Instant.now();
         Instant past = Instant.ofEpochSecond(epochSeconds);
         Duration duration = Duration.between(past, now);
@@ -39,19 +46,19 @@ public class DateUtility {
         List<String> parts = new ArrayList<>();
 
         if (weeks > 0) {
-            parts.add(weeks + (weeks > 1 ? " weeks" : " week"));
+            parts.add(weeks + getShort(weeks > 1 ? " weeks" : " week", shortUnits));
         }
         if (days > 0) {
-            parts.add(days + (days > 1 ? " days" : " day"));
+            parts.add(days + getShort(days > 1 ? " days" : " day", shortUnits));
         }
         if (hours > 0) {
-            parts.add(hours + (hours > 1 ? " hours" : " hour"));
+            parts.add(hours + getShort(hours > 1 ? " hours" : " hour", shortUnits));
         }
         if (minutes > 0 && weeks == 0) {
-            parts.add(minutes + (minutes > 1 ? " minutes" : " minute"));
+            parts.add(minutes + getShort(minutes > 1 ? " minutes" : " minute", shortUnits));
         }
         if (remainingSeconds > 0 && days == 0 && hours == 0 && weeks == 0) {
-            parts.add(remainingSeconds + (remainingSeconds > 1 ? " seconds" : " second"));
+            parts.add(remainingSeconds + getShort(remainingSeconds > 1 ? " seconds" : " second", shortUnits));
         }
 
         if (parts.isEmpty()) {

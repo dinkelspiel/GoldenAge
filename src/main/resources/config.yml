@@ -3,10 +3,24 @@ database:
   auto-migrate: true
 errors:
   insufficient-arguments: "§cNot enough arguments"
+  internal-server-error: "§cInternal server error"
+  invalid-argument: '§cInvalid argument provided: "%s"'
 formatters:
   date: "yyyy-MM-dd HH:mm"
 statistics:
   enabled: true
+  remote: "https://goldenage.keii.dev"
+  serverId: -1
+  serverSecret: ""
+betaprotect:
+  enabled: true
+  commands:
+    betaprotect:
+      inspect:
+        on-message: "§eTurned on inspect mode"
+        off-message: "§eTurned off inspect mode"
+        block-title: "§f----- §eBetaProtect §f----- §e(x%x/y%y/z%z)"
+        block-entry: "§e%d §f- §e%a §f%r §e#%i (%b)"
 commands:
   list:
     format: "§eOnline players (${online}/${max}): ${playerList}"

@@ -15,9 +15,11 @@ public class BlockTransaction {
     private Integer id = null;
     @Getter
     private TransactionActor actor;
-    @Getter @Nullable
+    @Getter
+    @Nullable
     private Integer userId = null;
-    @Getter @Nullable
+    @Getter
+    @Nullable
     private User user = null;
     @Getter
     private int x, y, z;
@@ -30,6 +32,7 @@ public class BlockTransaction {
     @Getter
     private int blockId;
     @Getter
+    @Nullable
     private Block block;
     @Getter
     private byte blockData;
@@ -38,15 +41,10 @@ public class BlockTransaction {
     private LocalDateTime createdAt;
 
     public BlockTransaction(
-            TransactionActor actor,
-            TransactionAction action,
-            @Nullable User user,
-            Block block,
-            World world,
-            LocalDateTime createdAt
+                            TransactionActor actor, TransactionAction action, @Nullable User user, Block block, World world, LocalDateTime createdAt
     ) {
         this.actor = actor;
-        if(user != null)
+        if (user != null)
             this.userId = user.getId();
         this.user = user;
         this.x = block.getX();
@@ -62,28 +60,22 @@ public class BlockTransaction {
     }
 
     public BlockTransaction(
-            Integer id,
-            TransactionActor actor,
-            TransactionAction action,
-            @Nullable User user,
-            Block block,
-            World world,
-            LocalDateTime createdAt
+                            int id, TransactionActor actor, TransactionAction action, @Nullable User user, int x, int y, int z, int blockTypeId, byte blockData, World world, LocalDateTime createdAt
     ) {
         this.id = id;
         this.actor = actor;
-        if(user != null)
+        if (user != null)
             this.userId = user.getId();
         this.user = user;
-        this.x = block.getX();
-        this.y = block.getY();
-        this.z = block.getZ();
+        this.x = x;
+        this.y = y;
+        this.z = z;
         this.worldId = world.getId();
         this.world = world;
         this.action = action;
-        this.blockId = block.getTypeId();
-        this.block = block;
-        this.blockData = block.getData();
+        this.blockId = blockTypeId;
+        this.block = null;
+        this.blockData = blockData;
         this.createdAt = createdAt;
     }
 }

@@ -10,32 +10,31 @@ import dev.keii.goldenage.dao.UserDao;
 import dev.keii.goldenage.dao.WorldDao;
 import dev.keii.goldenage.models.User;
 import dev.keii.goldenage.models.World;
-import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
-import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
-public class BlockBurnListener implements Listener {
+public class PlayerMoveListener implements Listener {
     private final GoldenAge plugin;
+    private final BetaProtect betaProtect;
 
-    public BlockBurnListener(BetaProtect betaProtect) {
+    public PlayerMoveListener(BetaProtect betaProtect) {
         this.plugin = betaProtect.getPlugin();
+        this.betaProtect = betaProtect;
     }
 
     @EventHandler
-    public void onBlockBurn(BlockBurnEvent event) throws Exception {
-        WorldDao worldDao = new WorldDao(plugin.getDatabaseUtility());
-        World world = worldDao.getWorldByUuid(event.getBlock().getWorld().getUID());
-        if (world == null) {
-            throw new Exception("World does not exist");
+    public void onPlayerMove(PlayerMoveEvent event) throws Exception {
+        UserDao userDao = new UserDao(plugin.getDatabaseUtility());
+        User user = userDao.getUserByUuid(event.getPlayer().getUniqueId());
+        if (user == null) {
+            throw new Exception("Player does not exist");
         }
 
-        BlockTransaction blockTransaction = new BlockTransaction(TransactionActor.Fire, TransactionAction.Remove, null, event.getBlock(), world, LocalDateTime.now(ZoneOffset.UTC));
-        BlockTransactionDao blockTransactionDao = new BlockTransactionDao(plugin.getDatabaseUtility());
-        blockTransactionDao.insertBlockTransaction(blockTransaction);
+        betaProtect.usersInContainers.remove(user.getId());
     }
 }

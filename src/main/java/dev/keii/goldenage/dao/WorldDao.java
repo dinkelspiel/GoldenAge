@@ -56,4 +56,25 @@ public class WorldDao {
             return null;
         }
     }
+
+    public @Nullable World getWorldById(int id) {
+        try {
+            PreparedStatement stmt = db.getConnection().prepareStatement("SELECT id, world_name, uuid FROM worlds WHERE id = ? LIMIT 1");
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                World world = new World(rs.getInt(1), rs.getString(2), UUID.fromString(rs.getString(3)));
+                rs.close();
+                stmt.close();
+                return world;
+            }
+
+            rs.close();
+            stmt.close();
+            return null;
+        } catch (SQLException e) {
+            return null;
+        }
+    }
 }

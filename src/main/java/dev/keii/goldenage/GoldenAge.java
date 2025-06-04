@@ -159,11 +159,18 @@ public class GoldenAge extends JavaPlugin {
         PluginManager pm = this.getServer().getPluginManager();
         pm.registerEvents(new PlayerJoinListener(this), this);
 
-        this.statistics = new Statistics(this, config.getStatistics().getRemote(), config.getStatistics().getServerId(), config.getStatistics().getServerSecret());
-        statistics.beginScheduler();
+        if (config.getStatistics().isEnabled()) {
+            this.statistics = new Statistics(this, config.getStatistics().getRemote(), config.getStatistics().getServerId(), config.getStatistics().getServerSecret());
+            statistics.beginScheduler();
+            GoldenAge.getLogger().info("Statistics has been enabled!");
+        }
 
-        BetaProtect betaProtect = new BetaProtect(this);
-        betaProtect.registerListeners();
+        if (config.getBetaProtect().isEnabled()) {
+            BetaProtect betaProtect = new BetaProtect(this);
+            betaProtect.registerCommands();
+            betaProtect.registerListeners();
+            GoldenAge.getLogger().info("BetaProtect has been enabled!");
+        }
 
         GoldenAge.getLogger().info("GoldenAge has been enabled!");
     }

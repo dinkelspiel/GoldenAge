@@ -1,8 +1,7 @@
 package dev.keii.goldenage.betaprotect.models;
 
 public enum TransactionAction {
-    Add(0),
-    Remove(1);
+    Add(0), Remove(1), Interact(2);
 
     private final int value;
 

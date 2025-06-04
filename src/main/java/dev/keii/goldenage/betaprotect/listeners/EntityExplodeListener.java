@@ -1,12 +1,14 @@
 package dev.keii.goldenage.betaprotect.listeners;
 
 import dev.keii.goldenage.GoldenAge;
+import dev.keii.goldenage.betaprotect.BetaProtect;
 import dev.keii.goldenage.betaprotect.dao.BlockTransactionDao;
 import dev.keii.goldenage.betaprotect.models.BlockTransaction;
 import dev.keii.goldenage.betaprotect.models.TransactionAction;
 import dev.keii.goldenage.betaprotect.models.TransactionActor;
 import dev.keii.goldenage.dao.WorldDao;
 import dev.keii.goldenage.models.World;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Fireball;
@@ -22,8 +24,8 @@ import java.util.List;
 public class EntityExplodeListener implements Listener {
     private final GoldenAge plugin;
 
-    public EntityExplodeListener(GoldenAge plugin) {
-        this.plugin = plugin;
+    public EntityExplodeListener(BetaProtect betaProtect) {
+        this.plugin = betaProtect.getPlugin();
     }
 
     @EventHandler
@@ -51,7 +53,7 @@ public class EntityExplodeListener implements Listener {
             actor = TransactionActor.Fireball;
 
         for (Block block : event.blockList()) {
-            BlockTransaction blockTransaction = new BlockTransaction(actor, TransactionAction.Add, null, block, world, LocalDateTime.now(ZoneOffset.UTC));
+            BlockTransaction blockTransaction = new BlockTransaction(actor, TransactionAction.Remove, null, block, world, LocalDateTime.now(ZoneOffset.UTC));
             blockTransactionDao.insertBlockTransaction(blockTransaction);
         }
 
