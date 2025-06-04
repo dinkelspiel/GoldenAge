@@ -11,7 +11,7 @@ public class StatisticsConfig {
         this.configuration = configuration;
     }
 
-    public boolean getEnabled() {
+    public boolean isEnabled() {
         return this.configuration.getBoolean("statistics.enabled", true);
     }
 

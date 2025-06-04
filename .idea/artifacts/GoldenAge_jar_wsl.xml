@@ -1,0 +1,15 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GoldenAge:jar:wsl">
+    <output-path>$PROJECT_DIR$/../b173server/plugins</output-path>
+    <root id="archive" name="GoldenAge.jar">
+      <element id="module-output" name="GoldenAge" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-annotations/2.18.3/jackson-annotations-2.18.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/xerial/sqlite-jdbc/3.49.1.0/sqlite-jdbc-3.49.1.0.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/dataformat/jackson-dataformat-yaml/2.18.3/jackson-dataformat-yaml-2.18.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-databind/2.18.3/jackson-databind-2.18.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/fasterxml/jackson/core/jackson-core/2.18.3/jackson-core-2.18.3.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/yaml/snakeyaml/2.4/snakeyaml-2.4.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/com/github/Moresteck/uberbukkit/2.0.2-241217-1442-3a5552b/uberbukkit-2.0.2-241217-1442-3a5552b.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

@@ -34,12 +34,10 @@ public class HistoryCommand implements CommandExecutor {
         UserNameDao userNameDao = new UserNameDao(this.plugin.getDatabaseUtility());
         UserDao userDao = new UserDao(this.plugin.getDatabaseUtility());
 
-        if(args.length == 0)
-        {
+        if (args.length == 0) {
             List<Login> logins = loginDao.getLogins(10);
             sender.sendMessage(plugin.getConfig().getCommands().getHistory().getGlobalTitle());
-            for(Login login : logins)
-            {
+            for (Login login : logins) {
                 User user = userDao.getUserById(login.getUserId());
                 UserName userName = userNameDao.getUserNameByUser(user);
                 Map<String, Object> params = new HashMap<>();
@@ -49,7 +47,7 @@ public class HistoryCommand implements CommandExecutor {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern(plugin.getConfig().getFormatters().getDate());
                 params.put("date", formatter.format(login.getCreatedAt()));
 
-                params.put("duration", DateUtility.getHumanReadableTimeSpan(login.getCreatedAt().toEpochSecond(ZoneOffset.UTC)));
+                params.put("duration", DateUtility.getHumanReadableTimeSpan(login.getCreatedAt().toEpochSecond(ZoneOffset.UTC), false));
 
                 StringSubstitutor substitutor = new StringSubstitutor(params);
                 sender.sendMessage(substitutor.replace(plugin.getConfig().getCommands().getHistory().getGlobalRow()));
@@ -58,8 +56,7 @@ public class HistoryCommand implements CommandExecutor {
         }
 
         User user = userDao.getUserByUserName(args[0]);
-        if(user == null)
-        {
+        if (user == null) {
             sender.sendMessage(plugin.getConfig().getCommands().getHistory().getNoUser());
             return false;
         }
@@ -74,8 +71,7 @@ public class HistoryCommand implements CommandExecutor {
         StringSubstitutor substitutor = new StringSubstitutor(params);
         sender.sendMessage(substitutor.replace(plugin.getConfig().getCommands().getHistory().getPlayerTitle()));
 
-        for(Login login : logins)
-        {
+        for (Login login : logins) {
             userName = userNameDao.getUserNameByUser(user);
             params = new HashMap<>();
             assert userName != null;
@@ -84,7 +80,7 @@ public class HistoryCommand implements CommandExecutor {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern(plugin.getConfig().getFormatters().getDate());
             params.put("date", formatter.format(login.getCreatedAt()));
 
-            params.put("duration", DateUtility.getHumanReadableTimeSpan(login.getCreatedAt().toEpochSecond(ZoneOffset.UTC)));
+            params.put("duration", DateUtility.getHumanReadableTimeSpan(login.getCreatedAt().toEpochSecond(ZoneOffset.UTC), false));
 
             substitutor = new StringSubstitutor(params);
             sender.sendMessage(substitutor.replace(plugin.getConfig().getCommands().getHistory().getPlayerRow()));

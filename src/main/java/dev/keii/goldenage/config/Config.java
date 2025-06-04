@@ -20,6 +20,9 @@ public class Config {
     @Getter
     private StatisticsConfig statistics;
 
+    @Getter
+    private BetaProtectConfig betaProtect;
+
     private final Configuration configuration;
 
     public Config(Configuration configuration) {
@@ -29,6 +32,7 @@ public class Config {
         this.errors = new ErrorsConfig(configuration);
         this.formatters = new FormattersConfig(configuration);
         this.statistics = new StatisticsConfig(configuration);
+        this.betaProtect = new BetaProtectConfig(configuration);
     }
 
     public Env getEnv() {

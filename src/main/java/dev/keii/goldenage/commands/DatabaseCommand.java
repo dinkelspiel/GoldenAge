@@ -42,6 +42,9 @@ public class DatabaseCommand implements CommandExecutor {
                 migrator.migrate();
             } else if (args[0].equalsIgnoreCase("rollback")) {
                 migrator.rollback();
+            } else {
+                sender.sendMessage(this.plugin.getConfig().getErrors().getInvalidArgument(args[0]));
+                return false;
             }
         } catch (SQLException e) {
             sender.sendMessage("Failed to migrate");

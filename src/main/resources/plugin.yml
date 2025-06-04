@@ -22,3 +22,7 @@ commands:
     description: Command for statistics
     usage: /statistics send
     permission: dev.keii.goldenage.statistics
+  betaprotect:
+    aliases: ["bp"]
+    description: Command for BetaProtect
+    usage: /betaprotect inspect

@@ -14,12 +14,14 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
+    <!--
     <repositories>
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
     </repositories>
+    -->
 
     <build>
         <plugins>
@@ -47,9 +49,9 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.Moresteck</groupId>
+            <groupId>org.bukkit</groupId>
             <artifactId>uberbukkit</artifactId>
-            <version>2.0.2-241217-1442-3a5552b</version>
+            <version>2.0.2</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.yaml</groupId>
