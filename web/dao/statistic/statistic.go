@@ -28,9 +28,9 @@ type MaxPlayerCountDay struct {
 }
 
 func GetMaxPlayerCountForDays(db *sql.DB, server models.Server, dayLimit *int) (*[]MaxPlayerCountDay, error) {
-	where := `WHERE server_id = ?`
+	where := `WHERE server_id = ? `
 	if dayLimit != nil {
-		where += ` AND created_at >= DATE_SUB(CURDATE(), INTERVAL %d DAY)`
+		where += ` AND created_at >= DATE_SUB(CURDATE(), INTERVAL %d DAY) `
 	}
 	query := fmt.Sprintf(`
 		SELECT DATE(created_at) AS date, MAX(player_count) AS max_player_count
