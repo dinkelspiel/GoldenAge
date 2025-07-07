@@ -27,15 +27,12 @@ type MaxPlayerCountDay struct {
 	MaxPlayerCount int
 }
 
-func GetMaxPlayerCountForDays(db *sql.DB, server models.Server, dayLimit *int) (*[]MaxPlayerCountDay, error) {
-	where := ` WHERE server_id = ? `
-	if dayLimit != nil {
-		where += ` AND created_at >= DATE_SUB(CURDATE(), INTERVAL %d DAY) `
-	}
+func GetMaxPlayerCountForDays(db *sql.DB, server models.Server, dayLimit int) (*[]MaxPlayerCountDay, error) {
 	query := fmt.Sprintf(`
 		SELECT DATE(created_at) AS date, MAX(player_count) AS max_player_count
-		FROM statistics`+where+
-		`GROUP BY DATE(created_at)
+		FROM statistics
+		WHERE server_id = ? AND created_at >= DATE_SUB(CURDATE(), INTERVAL %d DAY)
+		GROUP BY DATE(created_at)
 		ORDER BY date
 	`, dayLimit)
 
