@@ -2,6 +2,7 @@ package dev.keii.goldenage.statistics;
 
 import dev.keii.goldenage.statistics.listeners.PlayerJoinListener;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -61,6 +62,10 @@ public class Statistics {
         int playerCount = this.uniquePlayersPerSchedule.size();
         // Reset unique player count for next schedule
         this.uniquePlayersPerSchedule.clear();
+        // Re-add all online players
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            this.uniquePlayersPerSchedule.add(player.getUniqueId().toString());
+        }
 
         // String gameVersion = this.plugin.getServer().getGameVersion();
         String gameVersion = "b1.7.3"; // getGameVersion() is broken currently waiting for upstream fix
