@@ -1,8 +1,12 @@
 package dev.keii.goldenage.statistics;
 
+import dev.keii.goldenage.statistics.listeners.PlayerJoinListener;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.annotation.Nullable;
+import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,21 +15,22 @@ import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-
-import javax.annotation.Nullable;
-import javax.net.ssl.HttpsURLConnection;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Statistics {
     private final JavaPlugin plugin;
     private final String remote;
     private final @Nullable Integer serverId;
     private final @Nullable String serverSecret;
+    public final Set<String> uniquePlayersPerSchedule;
 
     public Statistics(JavaPlugin plugin, String remote, int serverId, String serverSecret) {
         this.plugin = plugin;
         this.remote = remote;
         this.serverId = serverId;
         this.serverSecret = serverSecret;
+        this.uniquePlayersPerSchedule = new HashSet<>();
     }
 
     protected Statistics(JavaPlugin plugin, String remote) {
@@ -33,12 +38,18 @@ public class Statistics {
         this.remote = remote;
         this.serverId = null;
         this.serverSecret = null;
+        this.uniquePlayersPerSchedule = new HashSet<>();
     }
 
     final int ticksInASecond = 20;
     final int secondsInAnHour = 3600;
 
     public void beginScheduler() {
+        // Register Events
+        PluginManager pm = Bukkit.getPluginManager();
+        pm.registerEvents(new PlayerJoinListener(this), this.plugin);
+
+        // Register Scheduler
         int interval = ticksInASecond * secondsInAnHour;
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
             sendStatistics();
@@ -47,7 +58,10 @@ public class Statistics {
     }
 
     public Integer sendStatistics() {
-        int playerCount = plugin.getServer().getOnlinePlayers().length;
+        int playerCount = this.uniquePlayersPerSchedule.size();
+        // Reset unique player count for next schedule
+        this.uniquePlayersPerSchedule.clear();
+
         // String gameVersion = this.plugin.getServer().getGameVersion();
         String gameVersion = "b1.7.3"; // getGameVersion() is broken currently waiting for upstream fix
         String serverEnvironment = this.plugin.getServer().getServerEnvironment();
@@ -56,7 +70,7 @@ public class Statistics {
         String javaVersion = System.getProperty("java.version");
 
         try {
-            URL url = (new URI(this.remote + "/api/statistics")).toURL(); // Replace with actual URL
+            URL url = (new URI(this.remote + "/api/statistics")).toURL();
             HttpURLConnection conn;
             if (url.getProtocol().equalsIgnoreCase("https")) {
                 conn = (HttpsURLConnection) url.openConnection();
