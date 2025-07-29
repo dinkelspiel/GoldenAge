@@ -1,17 +1,5 @@
 package dev.keii.goldenage.betaprotect.listeners;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-
 import dev.keii.goldenage.GoldenAge;
 import dev.keii.goldenage.betaprotect.BetaProtect;
 import dev.keii.goldenage.betaprotect.dao.BlockTransactionDao;
@@ -25,6 +13,18 @@ import dev.keii.goldenage.models.User;
 import dev.keii.goldenage.models.UserName;
 import dev.keii.goldenage.models.World;
 import dev.keii.goldenage.utils.DateUtility;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
+
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Arrays;
+import java.util.List;
 
 public class PlayerInteractListener implements Listener {
     private final GoldenAge plugin;
@@ -49,7 +49,7 @@ public class PlayerInteractListener implements Listener {
 
         if (event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
-            if (List.of(Material.CHEST, Material.DISPENSER, Material.FURNACE, Material.BURNING_FURNACE, Material.STONE_BUTTON, Material.LEVER, Material.TRAP_DOOR, Material.WOODEN_DOOR).contains(block.getType())) {
+            if (Arrays.asList(Material.CHEST, Material.DISPENSER, Material.FURNACE, Material.BURNING_FURNACE, Material.STONE_BUTTON, Material.LEVER, Material.TRAP_DOOR, Material.WOODEN_DOOR).contains(block.getType())) {
                 WorldDao worldDao = new WorldDao(plugin.getDatabaseUtility());
                 World world = worldDao.getWorldByUuid(block.getWorld().getUID());
                 if (world == null) {
