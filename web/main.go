@@ -239,10 +239,8 @@ func main() {
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		AllowOriginFunc: func(origin string) bool {
-			return origin == "null" || origin == "https://goldenage.keii.dev/" || origin == "https://github.com"
-		},
-		MaxAge: 12 * time.Hour,
+		AllowOrigins:     []string{"https://packpng.keii.dev", "https://goldenage.keii.dev", "https://github.com"},
+		MaxAge:           12 * time.Hour,
 	}))
 
 	// Listen and Server in 0.0.0.0:8080
