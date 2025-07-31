@@ -239,7 +239,7 @@ func main() {
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
 		AllowCredentials: true,
-		AllowOrigins:     []string{"https://packpng.keii.dev", "https://goldenage.keii.dev", "https://github.com"},
+		AllowOrigins:     []string{"https://packpng.keii.dev/", "https://goldenage.keii.dev/", "https://github.com"},
 		MaxAge:           12 * time.Hour,
 	}))
 
